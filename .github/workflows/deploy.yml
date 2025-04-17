@@ -26,12 +26,9 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Move out directory contents to root
-        run: |
-          mv out/* .
-          rm -rf out
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          folder: . 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          force_orphan: true 
