@@ -26,7 +26,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Move out directory contents to root
+        run: |
+          mv out/* .
+          rm -rf out
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: out 
+          folder: . 
