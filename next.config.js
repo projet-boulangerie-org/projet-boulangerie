@@ -4,6 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  basePath: '/projet-boulangerie',
+  assetPrefix: '/projet-boulangerie/',
 };
 
 module.exports = nextConfig; 
