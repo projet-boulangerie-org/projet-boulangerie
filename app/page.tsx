@@ -37,7 +37,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
-                src="/king.png"
+                src="/projet-boulangerie/king.png"
                 alt="Roi Divin"
                 fill
                 className="object-cover rounded-full"
@@ -60,7 +60,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
-                src="/apprenti.jpeg"
+                src="/projet-boulangerie/apprenti.jpeg"
                 alt="Apprenti Chevalier"
                 fill
                 className="object-cover rounded-full"
