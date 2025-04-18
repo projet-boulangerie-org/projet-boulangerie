@@ -4,8 +4,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '/projet-boulangerie',
-  assetPrefix: '/projet-boulangerie/',
+  basePath: process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/projet-boulangerie/' : '',
+  publicRuntimeConfig: {
+    basePath: process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '',
+  }
 };
 
 module.exports = nextConfig; 
