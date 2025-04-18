@@ -10,6 +10,7 @@
     "deploy": "next build && touch out/.nojekyll && git add out/ && git commit -m \"Deploy to gh-pages\" && git subtree push --prefix out origin gh-pages"
   },
   "dependencies": {
+    "@next/swc-win32-x64-msvc": "^15.3.1",
     "next": "15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
