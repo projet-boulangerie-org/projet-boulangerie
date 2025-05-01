@@ -99,5 +99,6 @@ next-env.d.ts
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Package lock
 package-lock.json
 package.json
