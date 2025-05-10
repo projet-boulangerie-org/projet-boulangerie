@@ -3,16 +3,13 @@
 import React from 'react';
 import Head from 'next/head';
 
+export const metadata = {
+  title: '🥐 Croissanté ! 🥐',
+};
+
 export default function CroissantPage() {
-  return (
-    <>
-      <Head>
-        <title>Vous avez été croissanté ! – Projet Boulangerie</title>
-        <meta
-          name="description"
-          content="La Guilde de la Boulangerie vous a croissanter pour vous rappeler de verrouiller votre four !"
-        />
-      </Head>
+return (
+  <>
 
       <main className="min-h-screen w-screen bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start py-6 px-0">
         {/* Colonne texte */}
@@ -31,7 +28,7 @@ export default function CroissantPage() {
           <p className="mt-10 text-xl leading-relaxed text-white">
             La Guilde de la Boulangerie a décidé de vous{' '}
             <span className="font-semibold text-boulange-gold">croissanter</span>, car vous avez oublié de
-            verrouiller votre four lors de votre pause.
+            verrouiller votre PC.
           </p>
 
           {/* Progress */}
