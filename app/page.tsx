@@ -1,5 +1,6 @@
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   const basePath = process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '';
@@ -14,9 +15,11 @@ export default function Home() {
             <li><a href="#presentation" className="bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors no-underline font-medieval text-center">Présentation</a></li>
             <li><a href="#equipe" className="bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors no-underline font-medieval text-center">Équipe</a></li>
           </ul>
-          <button className="bg-boulange-gold/50 text-white py-2 px-4 rounded-lg hover:bg-boulange-gold/85 transition-colors font-medieval w-21.6 text-center flex items-center justify-center">
-            Croissanter
-          </button>
+          <Link href="/croissant" target="_blank" rel="noopener noreferrer">
+            <button className="bg-boulange-gold/50 text-white py-2 px-4 rounded-lg hover:bg-boulange-gold/85 transition-colors font-medieval w-21.6 text-center flex items-center justify-center">
+              Croissanter
+            </button>
+          </Link>
         </div>
       </nav>
 
