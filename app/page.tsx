@@ -9,10 +9,15 @@ export default function Home() {
       <DarkModeInitializer />
       <nav className="p-6 flex justify-between items-center">
         <h1 className="text-2xl font-medium font-medieval text-boulange-gold">Projet Boulangerie</h1>
-        <ul className="flex space-x-4">
-          <li><a href="#presentation" className="hover:underline">Présentation</a></li>
-          <li><a href="#equipe" className="hover:underline">Équipe</a></li>
-        </ul>
+        <div className="flex items-center space-x-4">
+          <ul className="flex space-x-4">
+            <li><a href="#presentation" className="bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors no-underline font-medieval text-center">Présentation</a></li>
+            <li><a href="#equipe" className="bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors no-underline font-medieval text-center">Équipe</a></li>
+          </ul>
+          <button className="bg-boulange-gold/50 text-white py-2 px-4 rounded-lg hover:bg-boulange-gold/85 transition-colors font-medieval w-21.6 text-center flex items-center justify-center">
+            Croissanter
+          </button>
+        </div>
       </nav>
 
       <section id="presentation" className="flex-grow flex items-center justify-center p-12">
@@ -33,7 +38,9 @@ export default function Home() {
       </section>
 
       <section id="equipe" className="py-12 px-4">
-        <h2 className="text-3xl font-medieval text-center mb-8">Notre Équipe Royale</h2>
+        <h2 className="text-3xl font-medieval text-center mb-8">
+          <span className="bg-boulange-gold/15 py-4 px-8 rounded-lg inline-block">Notre Équipe Royale</span>
+        </h2>
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Roi Divin */}
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
