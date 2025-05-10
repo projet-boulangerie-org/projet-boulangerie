@@ -39,12 +39,7 @@ return (
           <div className="mt-12 space-y-10 text-sm pb-24">
             <p className="text-white">
               Pour (re)découvrir le projet,&nbsp;
-              <a
-                href="https://projet-boulangerie.github.io/projet-boulangerie/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-boulange-gold font-semibold"
-              >
+              <a href="https://projet-boulangerie.github.io/projet-boulangerie/" className="underline text-boulange-gold font-semibold">
                 cliquez ici
               </a>
               .
