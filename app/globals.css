@@ -25,9 +25,24 @@
     --foreground: #ededed;
   }
 }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav-button {
+  @apply bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors font-medieval text-center min-w-[100px] block no-underline;
+}
+
+#presentation {
+  scroll-margin-top: 100px;
+}
+
+#equipe {
+  scroll-margin-top: 85px;
 }
