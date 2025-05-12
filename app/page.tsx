@@ -4,28 +4,25 @@ import Link from 'next/link';
 
 export default function Home() {
   const basePath = process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '';
-  
+
   return (
     <main className="min-h-screen flex flex-col">
       <DarkModeInitializer />
-      <nav className="p-6 flex justify-between items-center">
+      <nav className="sticky top-0 z-50 bg-[var(--background)] p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <h1 className="text-2xl font-medium font-medieval text-boulange-gold">Projet Boulangerie</h1>
-        <div className="flex items-center space-x-4">
-          <ul className="flex space-x-4">
-            <li><a href="#presentation" className="bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors no-underline font-medieval text-center">Présentation</a></li>
-            <li><a href="#equipe" className="bg-boulange-gold/50 py-2 px-4 rounded-lg hover:bg-boulange-gold/80 transition-colors no-underline font-medieval text-center">Équipe</a></li>
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <ul className="flex flex-row gap-4">
+            <li><a href="#presentation" className="nav-button text-base">Présentation</a></li>
+            <li><a href="#equipe" className="nav-button text-base">Équipe</a></li>
+            <li><Link href="/croissant" target="_blank" rel="noopener noreferrer"><button className="nav-button text-base text-white">Croissanter</button></Link></li>
           </ul>
-          <Link href="/croissant" target="_blank" rel="noopener noreferrer">
-            <button className="bg-boulange-gold/50 text-white py-2 px-4 rounded-lg hover:bg-boulange-gold/85 transition-colors font-medieval w-21.6 text-center flex items-center justify-center">
-              Croissanter
-            </button>
-          </Link>
         </div>
       </nav>
 
-      <section id="presentation" className="flex-grow flex items-center justify-center p-12">
+
+      <section id="presentation" className="flex-grow flex items-center justify-center px-12 py-10">
         <div className="max-w-xl text-center">
-          <h2 className="text-4xl font-medieval mb-4">La Guilde de la Boulangerie</h2>
+          <h2 className="text-4xl font-medieval mb-10">La Guilde de la Boulangerie</h2>
           <p className="mb-6">
             Nous sommes les Gardiens de la Guilde de la Boulangerie, unis dans notre quête divine.
             Notre mission sacrée est d&apos;élever l&apos;art de la viennoiserie à des sommets inégalés,
@@ -40,7 +37,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="equipe" className="py-12 px-4">
+      <section id="equipe" className="py-4 px-4">
         <h2 className="text-3xl font-medieval text-center mb-8">
           <span className="bg-boulange-gold/15 py-4 px-8 rounded-lg inline-block">Notre Équipe Royale</span>
         </h2>
