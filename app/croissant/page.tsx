@@ -7,8 +7,8 @@ export const metadata = {
 };
 
 export default function CroissantPage() {
-return (
-  <>
+  return (
+    <>
 
       <main className="min-h-screen w-screen bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start py-6 px-0">
         {/* Colonne texte */}
@@ -24,7 +24,7 @@ return (
           </h1>
 
           {/* Texte principal */}
-          <p className="mt-10 text-xl leading-relaxed text-white">
+          <p className="mt-10 mb-10 text-xl leading-relaxed text-white">
             La Guilde de la Boulangerie a décidé de vous{' '}
             <span className="font-semibold text-boulange-gold">croissanter</span>, car vous avez oublié de
             verrouiller votre PC.
@@ -36,18 +36,10 @@ return (
           </p>
 
           {/* Bas de page espacé */}
-          <div className="mt-12 space-y-10 text-sm pb-24">
+          <div className="mt-10 space-y-10 text-sm pb-24">
             <p className="text-white">
               Pour (re)découvrir le projet,&nbsp;
-              <a
-                href="https://projet-boulangerie.github.io/projet-boulangerie/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-boulange-gold font-semibold"
-              >
-                cliquez ici
-              </a>
-              .
+              <a href="https://projet-boulangerie.github.io/projet-boulangerie/" className="underline text-boulange-gold font-semibold">cliquez ici</a>
             </p>
             <p className="text-white">
               N’oubliez pas : la Guilde attend une viennoiserie demain sur votre plan de travail.
