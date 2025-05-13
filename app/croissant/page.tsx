@@ -42,7 +42,7 @@ export default function CroissantPage() {
               <a href="https://projet-boulangerie.github.io/projet-boulangerie/" className="underline text-boulange-gold font-semibold">cliquez ici</a>
             </p>
             <p className="text-white">
-              N’oubliez pas : la Guilde attend une viennoiserie demain sur votre plan de travail.
+              N'oubliez pas : la Guilde attend une viennoiserie demain sur votre plan de travail.
             </p>
             <p className="text-boulange-gold">Error code : 🦐 CROISSANTAGE 🦐</p>
           </div>
