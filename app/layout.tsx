@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import "./globals.css";
+import DarkModeInitializer from '@/components/DarkModeInitializer';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +31,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}>
+        <DarkModeInitializer />  {/* Pour précharger le fond noir */}
         {children}
       </body>
     </html>
