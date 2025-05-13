@@ -36,7 +36,7 @@ export default function CroissantPage() {
           </p>
 
           {/* Bas de page espacé */}
-          <div className="mt-10 space-y-10 text-sm pb-24">
+          <div className="mt-10 space-y-6 text-sm pb-8 overflow-hidden">
             <p className="text-white">
               Pour (re)découvrir le projet,&nbsp;
               <a href="https://projet-boulangerie.github.io/projet-boulangerie/" className="underline text-boulange-gold font-semibold">cliquez ici</a>
