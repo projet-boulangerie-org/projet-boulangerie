@@ -1,6 +1,8 @@
 // app/croissant/page.tsx
 
 import React from 'react';
+import { Header } from '@/components/Header';
+import DarkModeInitializer from '@/components/DarkModeInitializer';
 
 export const metadata = {
   title: '🥐 Croissanté ! 🥐',
@@ -9,8 +11,11 @@ export const metadata = {
 export default function CroissantPage() {
   return (
     <>
-
-      <main className="min-h-screen w-screen bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start py-6 px-0">
+      <DarkModeInitializer />
+      <div className="top-0 z-50 bg-[var(--background)] pl-6 pt-6 mt-1 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <Header title="Projet Boulangerie" />
+      </div>
+      <main className="mt-10 w-full h-full bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start px-0">
         {/* Colonne texte */}
         <div className="flex-1 w-full text-left px-8 lg:px-16">
           {/* Ligne de viennoiseries */}
@@ -19,12 +24,12 @@ export default function CroissantPage() {
           </div>
 
           {/* Titre */}
-          <h1 className="mt-8 text-6xl md:text-7xl lg:text-6xl font-medieval text-boulange-gold">
+          <h1 className="mt-8 text-6xl md:text-6xl lg:text-5xl font-medieval text-boulange-gold">
             Vous avez été croissanté !
           </h1>
 
           {/* Texte principal */}
-          <p className="mt-10 mb-10 text-xl leading-relaxed text-white">
+          <p className="mt-10 mb-10 text-lg leading-relaxed text-white">
             La Guilde de la Boulangerie a décidé de vous{' '}
             <span className="font-semibold text-boulange-gold">croissanter</span>, car vous avez oublié de
             verrouiller votre PC.

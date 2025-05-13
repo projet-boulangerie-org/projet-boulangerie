@@ -1,15 +1,19 @@
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Header } from '@/components/Header';
+
+
+export const basePath = process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '';
 
 export default function Home() {
-  const basePath = process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '';
 
   return (
     <main className="min-h-screen flex flex-col">
       <DarkModeInitializer />
       <nav className="sticky top-0 z-50 bg-[var(--background)] p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <h1 className="text-2xl font-medium font-medieval text-boulange-gold">Projet Boulangerie</h1>
+        {/* <h1 className="text-2xl font-medium font-medieval text-boulange-gold">Projet Boulangerie</h1> */}
+        <Header title="Projet Boulangerie"/>
         <div className="flex flex-col md:flex-row items-center gap-4">
           <ul className="flex flex-row gap-4">
             <li><a href="#presentation" className="nav-button text-base">Présentation</a></li>
@@ -22,17 +26,17 @@ export default function Home() {
 
       <section id="presentation" className="flex-grow flex items-center justify-center px-12 py-10">
         <div className="max-w-xl text-center">
-          <h2 className="text-4xl font-medieval mb-10">La Guilde de la Boulangerie</h2>
+          <h2 className="text-4xl font-medieval mb-10 text-boulange-gold">La Guilde de la Boulangerie</h2>
           <p className="mb-6">
             Nous sommes les Gardiens de la Guilde de la Boulangerie, unis dans notre quête divine.
             Notre mission sacrée est d&apos;élever l&apos;art de la viennoiserie à des sommets inégalés,
             tout en défiant et surpassant toute concurrence.
           </p>
-          <p className="mb-6">
-            Notre objectif ultime est d&apos;anéantir les projets rivaux de Guizmo et Dondada,
+          <p className="mb-4">
+            Notre objectif ultime est d&apos;anéantir les projets rivaux <span className="text-red-500">Guizmo et Dondada</span>,
             démontrant ainsi notre suprématie via l&apos;art de la boulangerie.
-            Nous lèverons la game sans levure, enfournerons nos créations avec une précision divine,
-            servant croissants et épées dans un même fourneau.
+            Nous lèverons l&apos;game sans levure, enfournerons nos créations avec traditions
+            et serviront nos croissants en armure afin de relever la température.
           </p>
         </div>
       </section>
