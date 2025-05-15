@@ -64,10 +64,12 @@ L'application sera accessible à l'adresse : `https://<votre-nom-utilisateur>.gi
 
 ```
 projet-boulangerie/
-├── app/                    # Code source de l'application
-│   ├── components/        # Composants React
+├── app/
 │   ├── page.tsx          # Page principale
-│   └── layout.tsx        # Layout principal
+│   ├── layout.tsx        # Layout principal
+│   ├── croissant/
+│       ├── page.tsx          # Page secondaire
+├── components/        # Composants React
 ├── public/               # Assets statiques (images)
 └── styles/              # Styles globaux
 ```
