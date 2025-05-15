@@ -33,7 +33,7 @@ export default function Home() {
             tout en défiant et surpassant toute concurrence.
           </p>
           <p className="mb-4">
-            Notre objectif ultime est d&apos;anéantir les projets rivaux <span className="text-red-500">Guizmo et Dondada</span>,
+            Notre objectif ultime est d&apos;anéantir les projets rivaux <span className="text-red-500">Gizmo et Dondada</span>,
             démontrant ainsi notre suprématie via l&apos;art de la boulangerie.
             Nous lèverons l&apos;game sans levure, enfournerons nos créations avec traditions
             et serviront nos croissants en armure afin de relever la température.
