@@ -11,7 +11,7 @@ Une application web moderne pour présenter la Guilde de la Boulangerie et son �
 
 1. Clonez le dépôt :
 ```bash
-git clone <votre-url-de-depot>
+git clone https://github.com/projet-boulangerie/projet-boulangerie.git
 cd projet-boulangerie
 ```
 
