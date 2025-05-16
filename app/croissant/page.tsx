@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from '@/components/Header';
 import DarkModeInitializer from '@/components/DarkModeInitializer';
-import CopyMessage from '@/components/SlackMessage'; // chemin correct vers ton fichier
+import CopyMessage from '@/components/SlackMessage';
 
 
 export const metadata = {
