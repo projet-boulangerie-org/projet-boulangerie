@@ -13,12 +13,16 @@ export default function Home() {
       <DarkModeInitializer />
       <nav className="sticky top-0 z-50 bg-[var(--background)] p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         {/* <h1 className="text-2xl font-medium font-medieval text-boulange-gold">Projet Boulangerie</h1> */}
-        <Header title="Projet Boulangerie"/>
+        <Header title="Projet Boulangerie" />
         <div className="flex flex-col md:flex-row items-center gap-4">
           <ul className="flex flex-row gap-4">
-            <li><a href="#presentation" className="nav-button text-base">Présentation</a></li>
             <li><a href="#equipe" className="nav-button text-base">Équipe</a></li>
-            <li><Link href="/croissant" target="_blank" rel="noopener noreferrer"><button className="nav-button text-base text-white">Croissanter</button></Link></li>
+            <li><a href="/game" className="nav-button text-base">Play</a></li>
+            <li>
+              <Link href="/croissant" target="_blank" rel="noopener noreferrer">
+                <button className="nav-button text-base text-white">Croissanter</button>
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>

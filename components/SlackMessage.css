@@ -1,0 +1,69 @@
+.border-anim-top,
+.border-anim-right,
+.border-anim-bottom,
+.border-anim-left {
+  position: absolute;
+  background: white;
+  z-index: 10;
+}
+
+/* Ligne en haut */
+.border-anim-top {
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  animation: draw-top 0.8s ease-out forwards;
+}
+
+/* Ligne droite */
+.border-anim-right {
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 0%;
+  animation: draw-right 0.7s ease-out forwards;
+  animation-delay: 0.7s;
+}
+
+/* Ligne bas */
+.border-anim-bottom {
+  bottom: 0;
+  right: 0;
+  height: 2px;
+  width: 0%;
+  animation: draw-bottom 0.9s ease-out forwards;
+  animation-delay: 1.35s;
+}
+
+/* Ligne gauche */
+.border-anim-left {
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  height: 0%;
+  animation: draw-left 0.7s ease-out forwards;
+  animation-delay: 2.1s;
+}
+
+/* Animations lissées */
+@keyframes draw-top {
+  to {
+    width: 100%;
+  }
+}
+@keyframes draw-right {
+  to {
+    height: 100%;
+  }
+}
+@keyframes draw-bottom {
+  to {
+    width: 100%;
+  }
+}
+@keyframes draw-left {
+  to {
+    height: 100%;
+  }
+}
