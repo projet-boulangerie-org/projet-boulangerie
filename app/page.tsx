@@ -98,7 +98,7 @@ export default function Home() {
           </div>
 
           {/* Apprenti Pâtissier */}
-          <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
+          <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg opacity-40">
             <div className="w-48 h-48 relative">
               <Image
                 src={`${basePath}/patiss.png`}
@@ -107,7 +107,7 @@ export default function Home() {
                 className="object-cover rounded-full"
               />
             </div>
-            <div className="flex-1 text-center md:text-left">
+            <div className="flex-1 text-center md:text-left opacity-20">
               <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Apprenti Pâtissier</h3>
               <p className="mb-4">
                 Artisan passionné de la pâtisserie fine, je me consacre à l&apos;art délicat des desserts.
