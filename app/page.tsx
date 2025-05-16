@@ -16,8 +16,8 @@ export default function Home() {
         <Header title="Projet Boulangerie" />
         <div className="flex flex-col md:flex-row items-center gap-4">
           <ul className="flex flex-row gap-4">
-            <li><a href="#equipe" className="nav-button text-base">Équipe</a></li>
-            <li><a href="/game" target="_blank" className="nav-button text-base">Play</a></li>
+            <li><a href="#equipe" className="nav-button text-base text-white">Équipe</a></li>
+            <li><Link href="/game" target="_blank" className="nav-button text-base text-white">Play</Link></li>
             <li>
               <Link href="/croissant" target="_blank" rel="noopener noreferrer">
                 <button className="nav-button text-base text-white">Croissanter</button>

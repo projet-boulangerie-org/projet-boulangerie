@@ -2,6 +2,10 @@ import React from 'react';
 import { Header } from '@/components/Header';
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 
+export const metadata = {
+  title: '🥐 Gaming ! 🥐',
+};
+
 export default function Game() {
   return (
     <>
