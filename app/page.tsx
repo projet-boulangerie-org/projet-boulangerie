@@ -121,6 +121,31 @@ export default function Home() {
               </ul>
             </div>
           </div>
+
+          {/* Apprenti Panetier */}
+          <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
+            <div className="w-48 h-48 relative">
+              <Image
+                src={`${basePath}/panetier.png`}
+                alt="Apprenti Panetier"
+                fill
+                className="object-cover rounded-full"
+              />
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Apprenti Panetier</h3>
+              <p className="mb-4">
+                Sculpteur du pain quotidien, héritier du levain ancestral. Je veille à l&apos;alchimie des farines, à la noblesse de la croûte et à l&apos;âme de chaque mie.
+                À l&apos;aube, mon four est un temple, et chaque fournée, un serment de qualité..
+              </p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Artisan du pain vivant</li>
+                <li>Gardien du levain sacré</li>
+                <li>Maître des cuissons dorées</li>
+              </ul>
+            </div>
+          </div>
+
         </div>
       </section>
     </main>
