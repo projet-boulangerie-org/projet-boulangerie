@@ -17,7 +17,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center gap-4">
           <ul className="flex flex-row gap-4">
             <li><a href="#equipe" className="nav-button text-base">Équipe</a></li>
-            <li><a href="/game" className="nav-button text-base">Play</a></li>
+            <li><a href="/game" target="_blank" className="nav-button text-base">Play</a></li>
             <li>
               <Link href="/croissant" target="_blank" rel="noopener noreferrer">
                 <button className="nav-button text-base text-white">Croissanter</button>
@@ -37,7 +37,7 @@ export default function Home() {
             tout en défiant et surpassant toute concurrence.
           </p>
           <p className="mb-4">
-            Notre objectif ultime est d&apos;anéantir les projets rivaux <span className="text-red-500">Gizmo et Dondada</span>,
+            Notre objectif ultime est d&apos;anéantir le projet rival <span className="text-red-500">Gizmo</span> <span className="text-red-600 line-through italic opacity-50"> et Dondada</span>,
             démontrant ainsi notre suprématie via l&apos;art de la boulangerie.
             Nous lèverons l&apos;game sans levure, enfournerons nos créations avec traditions
             et serviront nos croissants en armure afin de relever la température.
