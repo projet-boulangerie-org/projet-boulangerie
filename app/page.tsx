@@ -18,7 +18,11 @@ export default function Home() {
           <ul className="flex flex-row gap-4">
             <li><a href="#equipe" className="nav-button text-base">Équipe</a></li>
             <li><a href="/game" className="nav-button text-base">Play</a></li>
-            <li><Link href="/croissant" target="_blank" rel="noopener noreferrer"><button className="nav-button text-base text-white">Croissanter</button></Link></li>
+            <li>
+              <Link href="/croissant" target="_blank" rel="noopener noreferrer">
+                <button className="nav-button text-base text-white">Croissanter</button>
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>

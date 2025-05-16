@@ -1,8 +1,8 @@
-// app/croissant/page.tsx
-
 import React from 'react';
 import { Header } from '@/components/Header';
 import DarkModeInitializer from '@/components/DarkModeInitializer';
+import CopyMessage from '@/components/SlackMessage'; // chemin correct vers ton fichier
+
 
 export const metadata = {
   title: '🥐 Croissanté ! 🥐',
@@ -16,7 +16,7 @@ export default function CroissantPage() {
         <Header title="Projet Boulangerie" />
       </div>
       <main className="mt-10 w-full h-full bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start px-0">
-        {/* Colonne texte */}
+        <CopyMessage />
         <div className="flex-1 w-full text-left px-8 lg:px-16">
           {/* Ligne de viennoiseries */}
           <div className="text-[6rem] lg:text-[8rem] text-boulange-gold space-x-2">
