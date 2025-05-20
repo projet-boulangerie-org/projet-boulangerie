@@ -12,9 +12,7 @@ export default function CroissantPage() {
   return (
     <>
       <DarkModeInitializer />
-      <div className="top-0 z-50 bg-[var(--background)] pl-6 pt-6 mt-1 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <Header title="Projet Boulangerie" />
-      </div>
+      <Header title="Projet Boulangerie" />
       <main className="mt-10 w-full h-full bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start px-0">
         <CopyMessage />
         <div className="flex-1 w-full text-left px-8 lg:px-16">
