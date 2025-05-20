@@ -28,7 +28,6 @@ export default function Home() {
         </div>
       </nav>
 
-
       <section id="presentation" className="flex-grow flex items-center justify-center px-12 py-10">
         <div className="max-w-xl text-center">
           <h2 className="text-4xl font-medieval mb-10 text-boulange-gold">La Guilde de la Boulangerie</h2>
