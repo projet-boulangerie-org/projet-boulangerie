@@ -1,8 +1,8 @@
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { basePath } from '@/lib/constants';
 
-export const basePath = process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '';
 
 export default function Home() {
 

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { basePath } from '@/app/page';
+import { basePath } from '@/lib/constants';
 import Image from 'next/image';
 import './SlackMessage.css';
 

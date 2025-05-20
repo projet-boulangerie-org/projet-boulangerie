@@ -1,4 +1,4 @@
-import { basePath } from '@app/page';
+import { basePath } from '@/lib/constants';
 
 // components/Header.tsx
 export function Header({ title }: { title: string }) {
