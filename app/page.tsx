@@ -1,8 +1,6 @@
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Header } from '@/components/Header';
-
 
 export const basePath = process.env.NODE_ENV === 'production' ? '/projet-boulangerie' : '';
 
@@ -12,9 +10,11 @@ export default function Home() {
     <main className="min-h-screen flex flex-col">
       <DarkModeInitializer />
       <nav className="sticky top-0 z-50 bg-[var(--background)] flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <h1 className="text-2xl pl-6 font-medium font-medieval text-boulange-gold">
-          Projet Boulangerie
-        </h1>
+        <a href={`${basePath}/`}>
+          <h1 className="text-2xl pl-6 font-medium font-medieval text-boulange-gold">
+            Projet Boulangerie
+          </h1>
+        </a>
         <div className="p-6 flex flex-col md:flex-row items-center gap-4">
           <ul className="flex flex-row gap-4">
             <li><a href="#equipe" className="nav-button text-base text-white">Équipe</a></li>
