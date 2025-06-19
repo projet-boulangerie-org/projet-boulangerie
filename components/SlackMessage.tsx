@@ -26,7 +26,7 @@ export default function CopyMessage() {
     <div className="absolute inline right-40 top-40 transform -translate-y-1/2 flex flex-col items-center">
       <button onClick={handleCopy} className={`relative overflow-hidden ${copied ? 'bg-green-600' : 'bg-red-600 hover:bg-red-700'} text-white min-w-[180px] font-bold py-3 px-5 rounded shadow flex items-center justify-center gap-3 transition-colors duration-300`}>
         <Image src={`${basePath}/slack.png`} alt="copier" className="object-cover rounded-full" width={24} height={24} />
-        {copied ? 'Copié !' : 'Copier le message Slack'}
+        {copied ? 'Le message Slack a été copié !' : 'Copier le message Slack'}
         {animateBorder && (
           <>
             <span className="border-anim-top"></span>
