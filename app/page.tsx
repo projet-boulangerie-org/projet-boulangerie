@@ -18,7 +18,7 @@ export default function Home() {
         <div className="p-6 flex flex-col md:flex-row items-center gap-4">
           <ul className="flex flex-row gap-4">
             <li><a href="#equipe" className="nav-button text-base text-white">Équipe</a></li>
-            <li><a href={`${basePath}/game`} target="_blank" className="nav-button text-base text-white">Play</a></li>
+            <li><a href={`${basePath}/game`} target="_blank" className="nav-button text-base text-white">Jouer</a></li>
             <li>
               <Link href='/croissant' target="_blank" rel="noopener noreferrer">
                 <button className="nav-button text-base text-white">Croissanter</button>
