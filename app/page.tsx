@@ -37,7 +37,7 @@ export default function Home() {
             tout en défiant et surpassant toute concurrence.
           </p>
           <p className="mb-4">
-            Notre objectif ultime est d&apos;anéantir le <span className="text-red-500">projet-gizmo</span> <span className="text-red-600 line-through italic opacity-50"> et Dondada</span>,
+            Notre objectif ultime est d&apos;anéantir le <span className="text-red-500">projet-gizmo</span>,
             démontrant ainsi notre suprématie via l&apos;art de la boulangerie.
             Nous lèverons l&apos;game sans levure, enfournerons nos créations avec traditions
             et serviront nos croissants en armure afin de relever la température.
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
 
           {/* Apprenti Pâtissier */}
-          <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg opacity-40">
+          <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
                 src={`${basePath}/patiss.png`}
@@ -108,7 +108,7 @@ export default function Home() {
                 className="object-cover rounded-full"
               />
             </div>
-            <div className="flex-1 text-center md:text-left opacity-20">
+            <div className="flex-1 text-center md:text-left">
               <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Apprenti Pâtissier</h3>
               <p className="mb-4">
                 Artisan passionné de la pâtisserie fine, je me consacre à l&apos;art délicat des desserts.
