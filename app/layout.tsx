@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import "@/styles/global.css";
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 import ConditionalHeader from "@/components/ConditionalHeader";
+import Footer from '@/components/Footer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DarkModeInitializer />  {/* Pour précharger le fond noir */}
         <ConditionalHeader /> {/* Affiche le header sauf sur la page d'accueil car soucis d'alignement*/}
         {children}
+        <Footer />
       </body>
     </html>
   );
