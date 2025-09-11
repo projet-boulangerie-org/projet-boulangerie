@@ -41,3 +41,55 @@ body {
 #equipe {
   scroll-margin-top: 85px;
 }
+
+/* Animated gradient badge for "powered by ai" */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem; /* ~px-3 py-1.5 */
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899, #06b6d4);
+  background-size: 300% 300%;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.22), 0 3px 10px rgba(6, 182, 212, 0.22);
+  animation: gradientShift 8s ease infinite;
+}
+
+.animated-badge::before,
+.animated-badge::after {
+  content: "";
+  position: absolute;
+  inset: -3px;            /* tighter glow to avoid clipping */
+  border-radius: inherit;
+  filter: blur(8px);
+  z-index: -1;
+  background: conic-gradient(from 0deg,
+    rgba(139, 92, 246, 0.35),
+    rgba(6, 182, 212, 0.35),
+    rgba(236, 72, 153, 0.35),
+    rgba(139, 92, 246, 0.35)
+  );
+  animation: gradientShift 12s linear infinite;
+  opacity: 0.7;
+}
+
+.animated-badge::after {
+  inset: -8px;            /* second, softer outer glow */
+  filter: blur(16px);
+  opacity: 0.35;
+}
+
+.dark .animated-badge {
+  box-shadow: 0 10px 24px rgba(139, 92, 246, 0.28), 0 5px 14px rgba(6, 182, 212, 0.28);
+}
