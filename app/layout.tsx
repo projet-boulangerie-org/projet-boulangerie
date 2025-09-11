@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
-import "./globals.css";
+import "@/styles/global.css";
 import DarkModeInitializer from '@/components/DarkModeInitializer';
-
+import ConditionalHeader from "@/components/ConditionalHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,15 +24,12 @@ export const metadata: Metadata = {
   description: "L'art de la viennoiserie jusqu'à des sommets inégalés",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}>
         <DarkModeInitializer />  {/* Pour précharger le fond noir */}
+        <ConditionalHeader /> {/* Affiche le header sauf sur la page d'accueil car soucis d'alignement*/}
         {children}
       </body>
     </html>

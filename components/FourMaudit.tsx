@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import DarkModeInitializer from "@/components/DarkModeInitializer";
-import { Header } from "@/components/Header";
 import "./FourMaudit.css";
 
 type Pastry = { id: string; emoji: string; label: string };
@@ -229,9 +227,7 @@ export default function LeFourMaudit() {
   // ------- rendu
   return (
     <>
-      <DarkModeInitializer />
-      <Header title="Projet Boulangerie" />
-
+      {/* <DarkModeInitializer /> */}
       <main className="min-h-screen flex flex-col items-center text-white px-4">
         {!mounted ? (
           <div className="min-h-[40vh] flex items-center justify-center text-sm text-gray-400">

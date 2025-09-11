@@ -1,6 +1,4 @@
 import React from 'react';
-import { Header } from '@/components/Header';
-import DarkModeInitializer from '@/components/DarkModeInitializer';
 import CopyMessage from '@/components/SlackMessage';
 
 
@@ -11,8 +9,6 @@ export const metadata = {
 export default function CroissantPage() {
   return (
     <>
-      <DarkModeInitializer />
-      <Header title="Projet Boulangerie" />
       <main className="mt-10 w-full h-full bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start px-0">
         <CopyMessage />
         <div className="flex-1 w-full text-left px-8 lg:px-16">
