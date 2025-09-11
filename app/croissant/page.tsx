@@ -13,7 +13,7 @@ export default function CroissantPage() {
         <CopyMessage />
         <div className="flex-1 w-full text-left px-8 lg:px-16">
           {/* Ligne de viennoiseries */}
-          <div className="text-[6rem] lg:text-[8rem] text-boulange-gold space-x-2">
+          <div className="text-[6rem] text-boulange-gold space-x-2">
             🥐 🥖 🥯 🥞
           </div>
 
@@ -48,7 +48,7 @@ export default function CroissantPage() {
         </div>
 
         {/* Croissant décoratif à droite, centré verticalement */}
-        <div className="flex-none ml-auto lg:mr-16 mt-12 lg:mt-0 text-[8rem] lg:text-[10rem]">
+        <div className="flex-none ml-auto lg:mr-40 mt-12 lg:mt-24 text-[8rem] lg:text-[7rem]">
           🥐
         </div>
       </main>
