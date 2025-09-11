@@ -6,7 +6,7 @@ import { basePath } from '@/lib/constants';
 export default function Home() {
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="flex-1 flex flex-col">
       <nav className="sticky top-0 z-50 bg-[var(--background)] flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <a href={`${basePath}/`}>
           <h1 className="text-2xl pl-6 font-medium font-medieval text-boulange-gold">

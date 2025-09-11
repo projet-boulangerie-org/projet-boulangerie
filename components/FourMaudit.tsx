@@ -228,7 +228,7 @@ export default function LeFourMaudit() {
   return (
     <>
       {/* <DarkModeInitializer /> */}
-      <main className="min-h-screen flex flex-col items-center text-white px-4">
+      <main className="flex-1 flex flex-col items-center text-white px-4">
         {!mounted ? (
           <div className="min-h-[40vh] flex items-center justify-center text-sm text-gray-400">
             Chargement du comptoir…

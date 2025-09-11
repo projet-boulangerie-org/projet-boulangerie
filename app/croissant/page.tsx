@@ -9,7 +9,7 @@ export const metadata = {
 export default function CroissantPage() {
   return (
     <>
-      <main className="mt-10 w-full h-full bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start px-0">
+      <main className="relative mt-10 w-full flex-1 bg-black flex flex-col lg:flex-row items-start lg:items-center justify-start px-0">
         <CopyMessage />
         <div className="flex-1 w-full text-left px-8 lg:px-16">
           {/* Ligne de viennoiseries */}
