@@ -38,7 +38,7 @@ export default function Footer() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">
+              <h3 className="text-3xl font-medieval text-boulange-gold text-center mb-6">
                 {open === "ml" ? "Mentions légales" : "Politique de confidentialité"}
               </h3>
               <button type="button" onClick={close} className="rounded px-2 py-1 hover:bg-white/10" aria-label="Fermer">
