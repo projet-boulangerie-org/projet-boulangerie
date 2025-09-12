@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning={true}>
       <body className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased min-h-screen flex flex-col`}>
         <DarkModeInitializer />  {/* Pour précharger le fond noir */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 min-h-0 flex flex-col">
         <ConditionalHeader /> {/* Affiche le header sauf sur la page d'accueil car soucis d'alignement*/}
         {children}
         </div>

@@ -1,0 +1,30 @@
+.croissant {
+  position: absolute;
+  top: -10vh;
+  opacity: 0.85;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+@keyframes fallStraight {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translateY(110vh) rotate(180deg); opacity: 0.9; }
+}
+
+@keyframes fallRight {
+  0% { transform: translate(-10vw, -10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translate(12vw, 110vh) rotate(360deg); opacity: 0.9; }
+}
+
+@keyframes fallLeft {
+  0% { transform: translate(10vw, -10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translate(-12vw, 110vh) rotate(-360deg); opacity: 0.9; }
+}
+
+.v1 { animation-name: fallStraight; animation-timing-function: linear; animation-iteration-count: infinite; }
+.v2 { animation-name: fallRight;   animation-timing-function: linear; animation-iteration-count: infinite; }
+.v3 { animation-name: fallLeft;    animation-timing-function: linear; animation-iteration-count: infinite; }
+
