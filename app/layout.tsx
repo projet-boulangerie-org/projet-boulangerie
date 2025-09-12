@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
-import "@/styles/global.css";
 import DarkModeInitializer from '@/components/DarkModeInitializer';
 import ConditionalHeader from "@/components/ConditionalHeader";
 import Footer from '@/components/Footer';
+import '@/styles/global.css';
+import '@/styles/SlackMessage.css';
+import '@/styles/FourMaudit.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
