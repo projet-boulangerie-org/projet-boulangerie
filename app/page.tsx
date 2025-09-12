@@ -48,6 +48,7 @@ export default function Home() {
           <span className="bg-boulange-gold/15 py-4 px-8 rounded-lg inline-block">Notre Équipe Royale</span>
         </h2>
         <div className="max-w-4xl mx-auto space-y-8">
+
           {/* Roi Divin */}
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
