@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import "./FourMaudit.css";
 
 type Pastry = { id: string; emoji: string; label: string };
 type Order = { id: number; items: string[]; timeMs: number };

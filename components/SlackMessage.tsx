@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { basePath } from '@/lib/constants';
 import Image from 'next/image';
-import './SlackMessage.css';
 
 
 export default function CopyMessage() {
