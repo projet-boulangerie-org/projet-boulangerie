@@ -9,11 +9,11 @@ export const metadata = {
 
 export default function CroissantPage() {
   const slackText =
-    "J'offre les croissants demain matin ! 🥐🥐\n\nPS : j'ai été croissanté par la Guilde de la Boulangerie (mon poste était déverrouillé).";
+    "J'offre les croissants demain matin ! 🥐🥐\n\nPS : j'ai été croissanté par la Guilde de la Boulangerie.";
 
   return (
     <main
-      className="relative h-full w-full bg-black flex items-center justify-center px-6 py-6 md:py-8 overflow-hidden"
+      className="relative h-full w-full bg-black grid place-items-center px-6 mt-20 pb-6 md:pt-16 md:pb-8 overflow-hidden"
     >
       <FullscreenOnLoad />
       {/* Les croissants en arrière plan */}
