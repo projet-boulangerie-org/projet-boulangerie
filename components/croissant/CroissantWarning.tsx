@@ -1,6 +1,6 @@
 type Props = { className?: string };
 
-export default function CroissantWarning({ className = "" }: Props) {
+export default function CroissantWarning({ className = '' }: Props) {
   return (
     <div className={`relative z-10 max-w-2xl mx-auto text-center ${className}`}>
       <h1 className="text-4xl md:text-5xl font-medieval text-boulange-gold mb-8">

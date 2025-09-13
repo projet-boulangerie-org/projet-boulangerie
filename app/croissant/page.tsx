@@ -1,7 +1,7 @@
-import CopyMessage from "@/components/SlackMessage";
-import FlyingCroissants from "@/components/FlyingCroissants";
-import CroissantWarning from "@/components/CroissantWarning";
-import FullscreenOnLoad from "@/components/FullscreenOnLoad";
+import CopyMessage from "@/components/croissant/SlackMessage";
+import FlyingCroissants from "@/components/croissant/FlyingCroissants";
+import CroissantWarning from "@/components/croissant/CroissantWarning";
+import FullscreenOnLoad from "@/components/croissant/FullscreenOnLoad";
 
 export const metadata = {
   title: "🥐 Croissanté ! 🥐",

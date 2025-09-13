@@ -11,9 +11,9 @@ type Props = {
 };
 
 export default function CopyMessage({
-  message = "J'offre les croissants demain matin ! 🥐🥐\n\nPS : j'ai été croissanté par la Guilde de la Boulangerie (mon poste était déverrouillé).",
+  message = "J'offre les croissants demain matin ! �Y�?�Y�?\n\nPS : j'ai ǸtǸ croissantǸ par la Guilde de la Boulangerie (mon poste Ǹtait dǸverrouillǸ).",
   buttonLabel = "Copier le message Slack",
-  copiedLabel = "Message copié !",
+  copiedLabel = "Message copiǸ !",
   className = "",
 }: Props) {
   const [copied, setCopied] = useState(false);
@@ -60,3 +60,4 @@ export default function CopyMessage({
     </div>
   );
 }
+

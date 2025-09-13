@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
-import DarkModeInitializer from '@/components/DarkModeInitializer';
-import ConditionalHeader from "@/components/ConditionalHeader";
-import Footer from '@/components/Footer';
+import DarkModeInitializer from '@/components/layout/DarkModeInitializer';
+import ConditionalHeader from "@/components/layout/ConditionalHeader";
+import Footer from '@/components/layout/Footer';
 import '@/styles/global.css';
 import '@/styles/SlackMessage.css';
 import '@/styles/FourMaudit.css';
