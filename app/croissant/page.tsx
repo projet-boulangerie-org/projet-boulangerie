@@ -9,14 +9,12 @@ export const metadata = {
 
 export default function CroissantPage() {
   const slackText =
-    "J'offre les croissants demain matin ! 🥐🥐\n\nPS : j'ai été croissanté par la Guilde de la Boulangerie.";
+    "J'offre les croissants demain matin ! 🥐 Croissanteria 🥐\n\nPS : j'ai été croissanté par la Guilde de la Boulangerie.";
 
   return (
     <main
-      className="relative h-full w-full bg-black grid place-items-center px-6 mt-20 pb-6 md:pt-16 md:pb-8 overflow-hidden"
-    >
+      className="relative h-full w-full bg-black grid place-items-center px-6 mt-20 pb-6 md:pt-16 md:pb-8 overflow-hidden">
       <FullscreenOnLoad />
-      {/* Les croissants en arrière plan */}
       <FlyingCroissants count={18} />
 
       <div className="relative z-[70] w-full max-w-3xl flex flex-col items-center gap-8 text-center">
@@ -25,7 +23,7 @@ export default function CroissantPage() {
           message={slackText}
           buttonLabel="Copier le message Slack"
           copiedLabel="Message copié !"
-          className="mt-2"
+          className="mt-1"
         />
         <div className="mt-4 md:mt-6 text-white/90 text-sm">
           Pour (re)découvrir le projet,&nbsp;
