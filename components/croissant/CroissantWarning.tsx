@@ -8,10 +8,12 @@ export default function CroissantWarning({ className = '' }: Props) {
       </h1>
       <div className="space-y-4">
         <p className="text-white/90 text-lg md:text-xl leading-relaxed">
-          Ton poste était déverrouillé. Sensibilisation sécurité&nbsp;: verrouille toujours ta session quand tu t’absentes.
+          Ton poste était déverrouillé. La prochaine fois, verrouille ta session quand tu t’absentes.
         </p>
         <p className="text-boulange-gold/90 text-base">
-          Windows&nbsp;: <span className="font-semibold">Win + L</span> — macOS&nbsp;: <span className="font-semibold">Ctrl + Cmd + Q</span>
+          Windows&nbsp;: <span className="font-semibold">Win + L</span>
+          <br />
+          MacOS&nbsp;: <span className="font-semibold">Ctrl + Cmd + Q</span>
         </p>
       </div>
     </div>

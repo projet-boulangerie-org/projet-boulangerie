@@ -1,20 +1,20 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import { basePath } from "@/lib/constants";
 import Image from "next/image";
 
 type Props = {
-  message?: string;
-  buttonLabel?: string;
-  copiedLabel?: string;
+  message: string;
+  buttonLabel: string;
+  copiedLabel: string;
   className?: string;
 };
 
 export default function CopyMessage({
-  message = "J'offre les croissants demain matin ! �Y�?�Y�?\n\nPS : j'ai ǸtǸ croissantǸ par la Guilde de la Boulangerie (mon poste Ǹtait dǸverrouillǸ).",
-  buttonLabel = "Copier le message Slack",
-  copiedLabel = "Message copiǸ !",
-  className = "",
+  message,
+  buttonLabel,
+  copiedLabel,
+  className,
 }: Props) {
   const [copied, setCopied] = useState(false);
   const [animateBorder, setAnimateBorder] = useState(false);
@@ -24,8 +24,8 @@ export default function CopyMessage({
       await navigator.clipboard.writeText(message);
       setAnimateBorder(true);
       setCopied(true);
-      setTimeout(() => setAnimateBorder(false), 3000);
-      setTimeout(() => setCopied(false), 3000);
+      setTimeout(() => setAnimateBorder(false), 2500);
+      setTimeout(() => setCopied(false), 2600);
     } catch (err) {
       console.error("Erreur de copie clipboard :", err);
     }
@@ -60,4 +60,3 @@ export default function CopyMessage({
     </div>
   );
 }
-
