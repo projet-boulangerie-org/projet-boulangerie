@@ -41,10 +41,6 @@ body {
   scroll-margin-top: 100px;
 }
 
-#equipe {
-  scroll-margin-top: 85px;
-}
-
 /* Animated gradient badge for "powered by ai" */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
