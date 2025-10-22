@@ -9,9 +9,9 @@ Une application web moderne (next.js) pour présenter la Guilde de la Boulangeri
 
 ## Installation
 
-1. Clonez le depot :
+1. Clonez et allez dans le depot :
    ```bash
-   git clone https://github.com/projet-boulangerie/projet-boulangerie.git
+   https://github.com/projet-boulangerie-org/projet-boulangerie.git
    cd projet-boulangerie
    ```
 2. Installez les dependances :
