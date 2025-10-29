@@ -78,14 +78,14 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
-                src={`${basePath}/apprenti.jpeg`}
-                alt="Apprenti Chevalier"
+                src={`${basePath}/seigneur.jpeg`}
+                alt="Seigneur suprême"
                 fill
                 className="object-cover rounded-full"
               />
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Apprenti Chevalier</h3>
+              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Seigneur suprême</h3>
               <p className="mb-4">
                 Gardien des secrets de la pâte feuilletée et maître dans l&apos;art de la viennoiserie.
                 Mon rôle est d&apos;assurer que chaque croissant soit une œuvre d&apos;art comestible.
@@ -98,18 +98,18 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Apprenti Pâtissier */}
+          {/* Grand maître Pâtissier */}
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
                 src={`${basePath}/patiss.png`}
-                alt="Apprenti Pâtissier"
+                alt="Grand maître Pâtissier"
                 fill
                 className="object-cover rounded-full"
               />
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Apprenti Pâtissier</h3>
+              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Grand maître Pâtissier</h3>
               <p className="mb-4">
                 Artisan passionné de la pâtisserie fine, je me consacre à l&apos;art délicat des desserts.
                 Mon expertise s&apos;étend des entremets classiques aux créations innovantes, toujours
@@ -123,18 +123,18 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Apprenti Panetier */}
+          {/* Grand maître Panetier */}
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
                 src={`${basePath}/panetier.png`}
-                alt="Apprenti Panetier"
+                alt="Grand maître Panetier"
                 fill
                 className="object-cover rounded-full"
               />
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Apprenti Panetier</h3>
+              <h3 className="text-2xl font-medieval text-boulange-gold mb-2">Grand maître Panetier</h3>
               <p className="mb-4">
                 Sculpteur du pain quotidien, héritier du levain ancestral. Je veille à l&apos;alchimie des farines, à la noblesse de la croûte et à l&apos;âme de chaque mie.
                 À l&apos;aube, mon four est un temple, et chaque fournée, un serment de qualité..
