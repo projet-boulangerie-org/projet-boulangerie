@@ -10,7 +10,7 @@ export default function Home() {
     <main className="flex-1 flex flex-col">
       <nav className="sticky top-0 z-50 bg-[var(--background)] flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <a href={`${basePath}/`}>
-          <h1 className="text-2xl pl-6 font-medium font-medieval text-boulange-gold">
+          <h1 className="text-2xl pl-6 py-7 font-medium font-medieval text-boulange-gold">
             Projet Boulangerie
           </h1>
         </a>
