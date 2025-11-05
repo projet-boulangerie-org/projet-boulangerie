@@ -11,7 +11,7 @@ Cette branche est dédiée à la gestion des versions de production du Projet Bo
 La branche `releases` sert à :
 
 - 📦 **Conserver les versions de production** : Chaque release contient un snapshot stable de l'application
-- 🏷️ **Gérer les versions tagguées** : Les releases sont identifiées par des tags sémantiques (v1.0.0, v1.1.0, etc.)
+- 🏷️ **Gérer les versions taguées** : Les releases sont identifiées par des tags sémantiques (v1.0.0, v1.1.0, etc.)
 - 🚀 **Faciliter les déploiements** : Source fiable pour les déploiements en production
 - 📝 **Tracer l'historique des versions** : Permet de revenir à des versions antérieures si nécessaire
 
