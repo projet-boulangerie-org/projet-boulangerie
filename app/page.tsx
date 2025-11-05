@@ -74,7 +74,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Apprenti Chevalier */}
+          {/* Seigneur suprême */}
           <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-boulange-flour/10 rounded-lg">
             <div className="w-48 h-48 relative">
               <Image
