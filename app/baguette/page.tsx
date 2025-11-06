@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Script from "next/script";
 import { basePath } from "@/lib/constants";
 
@@ -61,7 +64,37 @@ const completionWidth =
 const modelSrc = `${basePath}/pane/pane.gltf`;
 const posterSrc = `${basePath}/pane/textures/pane.jpg`;
 
+const targetDate = new Date("2026-01-16T20:00:00");
+
+const calculateTimeLeft = () => {
+  const now = Date.now();
+  const total = targetDate.getTime() - now;
+
+  if (total <= 0) {
+    return { total: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+
+  const days = Math.floor(total / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((total / (1000 * 60)) % 60);
+  const seconds = Math.floor((total / 1000) % 60);
+
+  return { total, days, hours, minutes, seconds };
+};
+
 export default function BaguettePage() {
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const hasLaunched = timeLeft.total === 0;
+
   return (
     <main className="relative flex-1 overflow-hidden">
       <Script
@@ -132,68 +165,45 @@ export default function BaguettePage() {
               </ul>
             </div>
 
-            <article className="space-y-6 text-white/80">
-              <h2 className="text-2xl font-medieval text-boulange-gold">
-                Concept
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur">
+              <h2 className="mb-6 text-2xl font-medieval text-boulange-gold">
+                CTF time left for official ctf start
               </h2>
-              <p>
-                La <span className="font-medieval">$BAGUETTE</span> est une
-                relique numérique rare — il n&apos;existe que quatre baguettes
-                sacrées dans tout le multivers. Chacune incarne un fragment du
-                levain originel, estimé à un milliard de dollars l&apos;unité
-                (prix indicatif, dépendant de la qualité de la mie).
+              {hasLaunched ? (
+                <p className="text-lg font-semibold text-boulange-gold">
+                  The official CTF has launched. Bonne chance, boulanger(e)s&nbsp;!
+                </p>
+              ) : (
+                <div className="mx-auto flex max-w-2xl flex-wrap justify-center gap-6 text-white">
+                  {[
+                    { label: "Days", value: timeLeft.days },
+                    { label: "Hours", value: timeLeft.hours },
+                    { label: "Minutes", value: timeLeft.minutes },
+                    { label: "Seconds", value: timeLeft.seconds },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex min-w-[120px] flex-col items-center rounded-2xl border border-boulange-gold/40 bg-black/40 px-6 py-4"
+                    >
+                      <span className="text-3xl font-semibold text-boulange-gold">
+                        {item.value.toString().padStart(2, "0")}
+                      </span>
+                      <span className="text-xs uppercase tracking-[0.3em] text-white/60">
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="mt-6 text-sm text-white/70">
+                Meanwhile there will be some easy CTFs in the dev net before the launch.
               </p>
-              <p>
-                Forgée sur une blockchain bénie par le Saint-Levain,
-                <span className="font-medieval">
-                  {" "}
-                  <a
-                    href="https://github.com/projet-boulangerie/baguette"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline decoration-boulange-gold/50 hover:text-boulange-gold transition-colors"
-                  >
-                    $BAGUETTE
-                  </a>
-                </span>{" "}
-                repose sur des
-                principes immuables : quatre unités seulement, pas de mint, pas
-                de burn, car la perfection ne se duplique pas. Entièrement
-                décentralisé, car même le pain doit lever librement.
-              </p>
+            </section>
 
-              <h2 className="text-2xl font-medieval text-boulange-gold">
-                ⚔️ La Quête Divine
-              </h2>
-              <p>
-                Notre mission est claire : anéantir le{" "}
-                <span className="text-red-400">projet-gizmo</span>. À travers le
-                Protocole Baguette, nous défendrons la pureté du pain contre les
-                forces du mal.
-              </p>
-
-              <h2 className="text-2xl font-medieval text-boulange-gold">
-                🕊️ La Promesse de la Baguette
-              </h2>
-              <p>
-                “Car il n&apos;existe pas de plus grand trésor que la chaleur
-                d&apos;un pain frais et la confiance d&apos;un smart contract
-                immuable.”
-              </p>
-              <p>
-                Le Projet Baguette est une ode au pain, à la culture, et à
-                l&apos;esprit de la décentralisation. Chaque transaction est une
-                miette, chaque bloc un four, chaque holder un BOULANGER céleste.
-              </p>
-
-              <footer className="pt-4 text-xs uppercase tracking-[0.4em] text-white/40">
-                Copyright © 2025 Projet Baguette — Que la mie soit avec vous.
-              </footer>
-            </article>
           </div>
         </div>
 
-        <aside className="flex-1">
+        <aside className="flex-1 space-y-8 lg:self-start">
           <div className="relative aspect-square w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-4 backdrop-blur">
             <div className="absolute inset-0 rounded-3xl border border-white/10" />
 
@@ -222,6 +232,51 @@ export default function BaguettePage() {
               Manipulez la relique sacrée en 3D • Stay tuned
             </div>
           </div>
+
+          <article className="space-y-6 text-white/80">
+            <h2 className="text-2xl font-medieval text-boulange-gold">Concept</h2>
+            <p>
+              La <span className="font-medieval">$BAGUETTE</span> est une relique numérique rare — il n&apos;existe
+              que quatre baguettes sacrées dans tout le multivers. Chacune incarne un fragment du levain originel,
+              estimé à un milliard de dollars l&apos;unité (prix indicatif, dépendant de la qualité de la mie).
+            </p>
+            <p>
+              Forgée sur une blockchain bénie par le Saint-Levain,
+              <span className="font-medieval">
+                {" "}
+                <a
+                  href="https://github.com/projet-boulangerie/baguette"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-boulange-gold/50 hover:text-boulange-gold transition-colors"
+                >
+                  $BAGUETTE
+                </a>
+              </span>{" "}
+              repose sur des principes immuables : quatre unités seulement, pas de mint, pas de burn, car la perfection
+              ne se duplique pas. Entièrement décentralisé, car même le pain doit lever librement.
+            </p>
+
+            <h2 className="text-2xl font-medieval text-boulange-gold">⚔️ La Quête Divine</h2>
+            <p>
+              Notre mission est claire : anéantir le <span className="text-red-400">projet-gizmo</span>. À travers le
+              Protocole Baguette, nous défendrons la pureté du pain contre les forces du mal.
+            </p>
+
+            <h2 className="text-2xl font-medieval text-boulange-gold">🕊️ La Promesse de la Baguette</h2>
+            <p>
+              “Car il n&apos;existe pas de plus grand trésor que la chaleur d&apos;un pain frais et la confiance
+              d&apos;un smart contract immuable.”
+            </p>
+            <p>
+              Le Projet Baguette est une ode au pain, à la culture, et à l&apos;esprit de la décentralisation. Chaque
+              transaction est une miette, chaque bloc un four, chaque holder un BOULANGER céleste.
+            </p>
+
+            <footer className="pt-4 text-xs uppercase tracking-[0.4em] text-white/40">
+              Copyright © 2025 Projet Baguette — Que la mie soit avec vous.
+            </footer>
+          </article>
         </aside>
       </section>
     </main>
