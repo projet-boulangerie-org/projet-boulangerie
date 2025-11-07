@@ -47,6 +47,8 @@ jobs:
 
       - name: Build static site
         run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
 
       - name: Check bundle size
         run: |
@@ -252,6 +254,7 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          NEXT_TELEMETRY_DISABLED: 1
 
   # Job 4: Résumé des tests
   test-summary:
