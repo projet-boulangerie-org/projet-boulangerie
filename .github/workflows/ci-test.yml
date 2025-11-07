@@ -2,13 +2,8 @@ name: CI - Test Branches
 
 # Se déclenche sur les push vers test-push et les PR vers test-pr
 on:
-  push:
-    branches:
-      - test-push
   pull_request:
-    branches:
-      - test-pr
-  workflow_dispatch:  # Permet aussi le déclenchement manuel
+    branches: [ test-pr ]
 
 permissions:
   contents: read
@@ -16,10 +11,32 @@ permissions:
   security-events: write
 
 jobs:
+  # Job 0: Vérifier que la PR vient bien de la branche test-pr
+  check-branch:
+    name: Check Branch Name
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify source branch is test-pr
+        run: |
+          echo "🔍 Vérification de la branche source..."
+          echo "Branche source: ${{ github.head_ref }}"
+          echo "Branche cible: ${{ github.base_ref }}"
+
+          if [[ "${{ github.head_ref }}" == "test-pr" ]]; then
+            echo "✅ Branche source valide: ${{ github.head_ref }}"
+          else
+            echo "❌ ERREUR: Seule la branche 'test-pr' peut créer des PR vers cette branche"
+            echo "   Branche actuelle: ${{ github.head_ref }}"
+            echo "   Branche acceptée: test-pr"
+            exit 1
+          fi
+
   # Job 1: Build & Lint basique (comme dev-to-release)
   quick-validation:
     name: Quick Build & Lint
     runs-on: ubuntu-latest
+    needs: [check-branch]
     outputs:
       critical: ${{ steps.npm-audit-test.outputs.critical }}
       high: ${{ steps.npm-audit-test.outputs.high }}
