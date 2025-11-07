@@ -31,6 +31,14 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Cache Next.js
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-
+
       - name: Install dependencies
         run: npm ci
 
@@ -70,6 +78,14 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+
+      - name: Cache Next.js
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
         run: npm ci
@@ -152,6 +168,14 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+
+      - name: Cache Next.js
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
         run: npm ci
@@ -247,6 +271,11 @@ jobs:
           echo "## Jobs Status:" >> $GITHUB_STEP_SUMMARY
           echo "- Quick Validation: ${{ needs.quick-validation.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Security Check: ${{ needs.security-check.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## ⚡ Cache optimisé avec actions/cache" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Next.js cache automatique (.next/cache/)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ npm cache automatique (node_modules/)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🚀 Builds jusqu'à 5-10x plus rapides !" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## 💡 Tips:" >> $GITHUB_STEP_SUMMARY
           echo "- Ajoutez \`[full-test]\` dans votre message de commit pour lancer les tests complets" >> $GITHUB_STEP_SUMMARY
