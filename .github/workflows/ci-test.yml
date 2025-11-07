@@ -117,41 +117,125 @@ jobs:
           sarif_file: 'trivy-results.sarif'
         continue-on-error: true
 
-      # Secrets scanning
-      - name: Scan for secrets
+      # Secrets scanning - DevSecOps adapté à la taille du projet
+      - name: Scan for secrets & sensitive files
         run: |
-          echo "🔍 Recherche de secrets..."
+          echo "🔍 DevSecOps Security Scan..."
+          echo ""
 
           FOUND=0
 
-          # API keys
-          if grep -r -E "api[_-]?key\s*[=:]\s*['\"][a-zA-Z0-9_-]{20,}['\"]" app/ components/ lib/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
-            echo "⚠️ Potentielle API key détectée"
+          # 1. Fichiers sensibles qui ne devraient JAMAIS être commités
+          echo "📁 Recherche de fichiers sensibles..."
+          SENSITIVE_FILES=$(find . -type f \( \
+            -name "*.pem" -o \
+            -name "*.key" -o \
+            -name "*.p12" -o \
+            -name "*.pfx" -o \
+            -name "*password*" -o \
+            -name "*secret*" -o \
+            -name "*credential*" -o \
+            -name ".env" -o \
+            -name ".env.local" -o \
+            -name ".env.production" \
+          \) -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/out/*" 2>/dev/null)
+
+          if [ ! -z "$SENSITIVE_FILES" ]; then
+            echo "⚠️ Fichiers sensibles détectés:"
+            echo "$SENSITIVE_FILES"
+            FOUND=1
+          else
+            echo "✅ Pas de fichiers sensibles"
+          fi
+          echo ""
+
+          # 2. Secrets hardcodés dans le code (patterns communs)
+          echo "🔐 Recherche de secrets hardcodés..."
+
+          # API Keys (format typique: 20-50 caractères alphanumériques)
+          if grep -r -E "(api[_-]?key|apikey)\s*[=:]\s*['\"][a-zA-Z0-9_-]{15,}['\"]" \
+            app/ components/ lib/ \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+            2>/dev/null; then
+            echo "⚠️ API key potentielle détectée"
+            grep -rn -E "(api[_-]?key|apikey)\s*[=:]\s*['\"][a-zA-Z0-9_-]{15,}['\"]" \
+              app/ components/ lib/ \
+              --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+              2>/dev/null | head -5
             FOUND=1
           fi
 
-          # Passwords
-          if grep -r -E "(password|passwd|pwd)\s*[=:]\s*['\"].+['\"]" app/ components/ lib/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
-            echo "⚠️ Potentiel password détecté"
+          # Tokens (GitHub, JWT, etc.)
+          if grep -r -E "(token|bearer|auth)\s*[=:]\s*['\"][a-zA-Z0-9_-]{20,}['\"]" \
+            app/ components/ lib/ \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+            2>/dev/null; then
+            echo "⚠️ Token potentiel détecté"
+            grep -rn -E "(token|bearer|auth)\s*[=:]\s*['\"][a-zA-Z0-9_-]{20,}['\"]" \
+              app/ components/ lib/ \
+              --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+              2>/dev/null | head -5
+            FOUND=1
+          fi
+
+          # Passwords hardcodés
+          if grep -r -E "(password|passwd|pwd)\s*[=:]\s*['\"][^'\"]{3,}['\"]" \
+            app/ components/ lib/ \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+            2>/dev/null; then
+            echo "⚠️ Password hardcodé détecté"
+            grep -rn -E "(password|passwd|pwd)\s*[=:]\s*['\"][^'\"]{3,}['\"]" \
+              app/ components/ lib/ \
+              --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+              2>/dev/null | head -5
             FOUND=1
           fi
 
           # Private keys
-          if grep -r "BEGIN.*PRIVATE KEY" . --include="*.ts" --include="*.tsx" --include="*.js" 2>/dev/null; then
+          if grep -r "BEGIN.*PRIVATE KEY" . \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.txt" --include="*.pem" \
+            -not -path "*/node_modules/*" -not -path "*/.git/*" \
+            2>/dev/null; then
             echo "⚠️ Private key détectée"
+            grep -rn "BEGIN.*PRIVATE KEY" . \
+              --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.txt" --include="*.pem" \
+              -not -path "*/node_modules/*" -not -path "*/.git/*" \
+              2>/dev/null
             FOUND=1
           fi
 
-          # Tokens
-          if grep -r -E "token\s*[=:]\s*['\"][a-zA-Z0-9_-]{30,}['\"]" app/ components/ lib/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
-            echo "⚠️ Potentiel token détecté"
-            FOUND=1
+          if [ $FOUND -eq 0 ]; then
+            echo "✅ Pas de secrets hardcodés détectés"
           fi
+          echo ""
 
-          if [ $FOUND -eq 1 ]; then
-            echo "⚠️ Secrets détectés (non bloquant pour test)"
+          # 3. URLs/endpoints sensibles (best practice: utiliser variables d'env)
+          echo "🌐 Vérification des URLs hardcodées..."
+          HARDCODED_URLS=$(grep -r -E "(https?://[a-zA-Z0-9.-]+\.(com|net|org|io))" \
+            app/ components/ lib/ \
+            --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" \
+            2>/dev/null | \
+            grep -v "github.com" | \
+            grep -v "nextjs.org" | \
+            grep -v "vercel.com" | \
+            grep -v "localhost" | \
+            grep -v "example.com" | \
+            wc -l)
+
+          if [ "$HARDCODED_URLS" -gt 0 ]; then
+            echo "ℹ️  $HARDCODED_URLS URL(s) hardcodée(s) trouvée(s)"
+            echo "   Conseil: Utiliser des variables d'environnement pour les URLs d'API"
           else
-            echo "✅ Aucun secret détecté"
+            echo "✅ Pas d'URLs sensibles hardcodées"
+          fi
+          echo ""
+
+          # Résumé final
+          if [ $FOUND -eq 1 ]; then
+            echo "⚠️  SECRETS/FICHIERS SENSIBLES DÉTECTÉS"
+            echo "   → Non bloquant pour test-push, mais à corriger avant production"
+          else
+            echo "✅ Scan de sécurité DevSecOps OK"
           fi
 
   # Job 3: Tests complets (comme release-to-main mais non bloquant)
