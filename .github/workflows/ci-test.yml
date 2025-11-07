@@ -2,13 +2,8 @@ name: CI - Test Branches
 
 # Se déclenche sur les push vers test-push et les PR vers test-pr
 on:
-  push:
-    branches:
-      - test-push
   pull_request:
-    branches:
-      - test-pr
-  workflow_dispatch:  # Permet aussi le déclenchement manuel
+    branches: [ test-pr ]
 
 permissions:
   contents: read
@@ -16,10 +11,33 @@ permissions:
   security-events: write
 
 jobs:
+  # Job 0: Vérifier que la PR vient bien d'une branche autorisée (ex: test-push)
+  check-branch:
+    name: Check Branch Name
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify source branch is authorized
+        run: |
+          echo "🔍 Vérification de la branche source..."
+          echo "Branche source: ${{ github.head_ref }}"
+          echo "Branche cible: ${{ github.base_ref }}"
+
+          # Branches autorisées à créer des PR vers test-pr
+          if [[ "${{ github.head_ref }}" == "test-push" ]]; then
+            echo "✅ Branche source valide: ${{ github.head_ref }}"
+          else
+            echo "❌ ERREUR: Seule la branche 'test-push' peut créer des PR vers test-pr"
+            echo "   Branche actuelle: ${{ github.head_ref }}"
+            echo "   Branche acceptée: test-push"
+            exit 1
+          fi
+
   # Job 1: Build & Lint basique (comme dev-to-release)
   quick-validation:
     name: Quick Build & Lint
     runs-on: ubuntu-latest
+    needs: [check-branch]
     outputs:
       critical: ${{ steps.npm-audit-test.outputs.critical }}
       high: ${{ steps.npm-audit-test.outputs.high }}
@@ -104,55 +122,55 @@ jobs:
           echo "🔍 npm audit (test branch - BLOQUANT pour test)..."
           echo "📋 Politique TEST: 0 critical, 0 high, <5 moderate, <10 low"
           echo ""
-          
+
           # Capturer la sortie de npm audit
           set +e
           AUDIT_OUTPUT=$(npm audit --json 2>&1)
           AUDIT_EXIT=$?
           set -e
-          
+
           # Parser les résultats JSON
           CRITICAL=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.critical // 0' 2>/dev/null || echo "0")
           HIGH=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.high // 0' 2>/dev/null || echo "0")
           MODERATE=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.moderate // 0' 2>/dev/null || echo "0")
           LOW=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.low // 0' 2>/dev/null || echo "0")
-          
+
           # Export vers output pour le summary
           echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
           echo "high=$HIGH" >> $GITHUB_OUTPUT
           echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
           echo "low=$LOW" >> $GITHUB_OUTPUT
-          
+
           echo "📊 Résultats du scan:"
           echo "- Critical severity vulnerabilities: $CRITICAL"
           echo "- High severity vulnerabilities: $HIGH"
           echo "- Moderate severity vulnerabilities: $MODERATE"
           echo "- Low severity vulnerabilities: $LOW"
           echo ""
-          
+
           # Vérifier les seuils (comme dev-to-release)
           FAILED=0
-          
+
           if [ $CRITICAL -gt 0 ]; then
             echo "❌ BLOQUÉ: $CRITICAL vulnérabilité(s) CRITICAL (seuil: 0)"
             FAILED=1
           fi
-          
+
           if [ $HIGH -gt 0 ]; then
             echo "❌ BLOQUÉ: $HIGH vulnérabilité(s) HIGH (seuil: 0)"
             FAILED=1
           fi
-          
+
           if [ $MODERATE -ge 5 ]; then
             echo "❌ BLOQUÉ: $MODERATE vulnérabilité(s) MODERATE (seuil: <5)"
             FAILED=1
           fi
-          
+
           if [ $LOW -ge 10 ]; then
             echo "❌ BLOQUÉ: $LOW vulnérabilité(s) LOW (seuil: <10)"
             FAILED=1
           fi
-          
+
           if [ $FAILED -eq 1 ]; then
             echo ""
             echo "� Actions requises:"
@@ -160,18 +178,21 @@ jobs:
             echo "  2. Si impossible: npm audit fix --force (attention aux breaking changes)"
             echo "  3. Mettez à jour manuellement les dépendances si nécessaire"
             echo ""
-            npm audit
+            npm audit || true
             exit 1
           fi
-          
+
           echo "✅ Seuils de vulnérabilités respectés - OK"
-          
+
           # Afficher les vulnérabilités restantes (warning seulement)
           if [ $MODERATE -gt 0 ] || [ $LOW -gt 0 ]; then
             echo ""
             echo "ℹ️  Vulnérabilités dans les limites acceptables:"
             [ $MODERATE -gt 0 ] && echo "  - $MODERATE moderate (acceptable: <5)"
             [ $LOW -gt 0 ] && echo "  - $LOW low (acceptable: <10)"
+            echo ""
+            echo "📋 Détails des vulnérabilités:"
+            npm audit || true
           fi
 
       # Trivy scan
@@ -430,7 +451,7 @@ jobs:
           echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "## 📊 Vulnérabilités npm audit:" >> $GITHUB_STEP_SUMMARY
           echo "- **Critical severity vulnerabilities:** ${{ needs.quick-validation.outputs.critical || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **High severity vulnerabilities:** ${{ needs.quick-validation.outputs.high || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
@@ -439,7 +460,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "⚠️ _BLOQUANT pour test (seuils: 0 critical, 0 high, <5 moderate, <10 low)_" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "## Jobs Status:" >> $GITHUB_STEP_SUMMARY
           echo "- Quick Validation: ${{ needs.quick-validation.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Security Check: ${{ needs.security-check.result }}" >> $GITHUB_STEP_SUMMARY
