@@ -103,7 +103,7 @@ export default function BaguettePage() {
         strategy="afterInteractive"
       />
 
-      <section className="relative z-10 flex min-h-screen w-full flex-col gap-12 px-6 pb-20 pt-28 lg:flex-row lg:items-center lg:gap-20 lg:px-16">
+      <section className="relative z-10 flex min-h-screen w-full flex-col gap-12 px-6 pb-20 pt-28 lg:flex-row lg:items-start lg:gap-20 lg:px-16">
         <div className="flex-1 space-y-10">
           <header className="space-y-6">
             <p className="text-sm uppercase tracking-[0.6em] text-white/50">
@@ -204,6 +204,52 @@ export default function BaguettePage() {
         </div>
 
         <aside className="flex-1 space-y-8 lg:self-start">
+          <section className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur">
+            <h2 className="mb-4 text-2xl font-medieval text-boulange-gold">
+              Reliques on-chain
+            </h2>
+            <p className="mb-6 text-sm text-white/70">
+              Avant de valider le flag principal, assure-toi de récupérer quelques POL Amoy gratuits via le{" "}
+              <a
+                href="https://faucet.polygon.technology/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-boulange-gold underline underline-offset-4 hover:text-white"
+              >
+                faucet officiel
+              </a>{" "}
+              pour couvrir tes écritures on-chain.
+            </p>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+                <p className="text-xs uppercase tracking-[0.4em] text-white/50">
+                  Distributor smart contract
+                </p>
+                <h3 className="mt-2 text-lg font-semibold text-white">Write access</h3>
+                <a
+                  href="https://amoy.polygonscan.com/address/0xea1cba7222b3e059245bb5f6e053a7d54e3b6d1b#writeContract"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center text-sm font-medium text-boulange-gold underline underline-offset-4 hover:text-white"
+                >
+                  View on Polygonscan
+                </a>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+                <p className="text-xs uppercase tracking-[0.4em] text-white/50">$BAGUETTE token</p>
+                <h3 className="mt-2 text-lg font-semibold text-white">Contract metadata</h3>
+                <a
+                  href="https://amoy.polygonscan.com/token/0x280d648f11a22c5d83af781ae7a86210a3bf10c4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center text-sm font-medium text-boulange-gold underline underline-offset-4 hover:text-white"
+                >
+                  View on Polygonscan
+                </a>
+              </div>
+            </div>
+          </section>
+
           <div className="relative aspect-square w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-4 backdrop-blur">
             <div className="absolute inset-0 rounded-3xl border border-white/10" />
 
