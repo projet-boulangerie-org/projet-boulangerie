@@ -97,12 +97,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # npm audit (non bloquant pour test - informatif)
-      - name: npm audit (TEST - Informatif)
+      # npm audit (BLOQUANT pour test)
+      - name: npm audit (TEST - BLOQUANT pour tester)
         id: npm-audit-test
         run: |
-          echo "🔍 npm audit (test branch - non bloquant)..."
-          echo "📋 Information: Les seuils seront appliqués sur release/main"
+          echo "🔍 npm audit (test branch - BLOQUANT pour test)..."
+          echo "📋 Politique TEST: 0 critical, 0 high, <5 moderate, <10 low"
           echo ""
           
           # Capturer la sortie de npm audit
@@ -130,24 +130,49 @@ jobs:
           echo "- Low severity vulnerabilities: $LOW"
           echo ""
           
-          TOTAL=$((CRITICAL + HIGH + MODERATE + LOW))
+          # Vérifier les seuils (comme dev-to-release)
+          FAILED=0
           
-          if [ $TOTAL -gt 0 ]; then
-            echo "ℹ️  $TOTAL vulnérabilité(s) détectée(s) - Non bloquant pour test"
-            echo ""
-            echo "📌 Rappel des seuils pour les branches suivantes:"
-            echo "  - dev → release: 0 critical, 0 high, <5 moderate, <10 low"
-            echo "  - release → main: 0 vulnérabilités (toutes criticités)"
-            echo ""
-            
-            if [ $CRITICAL -gt 0 ] || [ $HIGH -gt 0 ]; then
-              echo "⚠️  Attention: Vulnérabilités critical/high présentes!"
-              echo "   → Seront BLOQUANTES sur dev→release"
-            fi
-          else
-            echo "✅ Aucune vulnérabilité détectée"
+          if [ $CRITICAL -gt 0 ]; then
+            echo "❌ BLOQUÉ: $CRITICAL vulnérabilité(s) CRITICAL (seuil: 0)"
+            FAILED=1
           fi
-        continue-on-error: true
+          
+          if [ $HIGH -gt 0 ]; then
+            echo "❌ BLOQUÉ: $HIGH vulnérabilité(s) HIGH (seuil: 0)"
+            FAILED=1
+          fi
+          
+          if [ $MODERATE -ge 5 ]; then
+            echo "❌ BLOQUÉ: $MODERATE vulnérabilité(s) MODERATE (seuil: <5)"
+            FAILED=1
+          fi
+          
+          if [ $LOW -ge 10 ]; then
+            echo "❌ BLOQUÉ: $LOW vulnérabilité(s) LOW (seuil: <10)"
+            FAILED=1
+          fi
+          
+          if [ $FAILED -eq 1 ]; then
+            echo ""
+            echo "� Actions requises:"
+            echo "  1. Exécutez: npm audit fix"
+            echo "  2. Si impossible: npm audit fix --force (attention aux breaking changes)"
+            echo "  3. Mettez à jour manuellement les dépendances si nécessaire"
+            echo ""
+            npm audit
+            exit 1
+          fi
+          
+          echo "✅ Seuils de vulnérabilités respectés - OK"
+          
+          # Afficher les vulnérabilités restantes (warning seulement)
+          if [ $MODERATE -gt 0 ] || [ $LOW -gt 0 ]; then
+            echo ""
+            echo "ℹ️  Vulnérabilités dans les limites acceptables:"
+            [ $MODERATE -gt 0 ] && echo "  - $MODERATE moderate (acceptable: <5)"
+            [ $LOW -gt 0 ] && echo "  - $LOW low (acceptable: <10)"
+          fi
 
       # Trivy scan
       - name: Run Trivy vulnerability scanner
@@ -412,7 +437,7 @@ jobs:
           echo "- **Moderate severity vulnerabilities:** ${{ needs.quick-validation.outputs.moderate || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Low severity vulnerabilities:** ${{ needs.quick-validation.outputs.low || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "ℹ️ _Non bloquant pour test-push_" >> $GITHUB_STEP_SUMMARY
+          echo "⚠️ _BLOQUANT pour test (seuils: 0 critical, 0 high, <5 moderate, <10 low)_" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## Jobs Status:" >> $GITHUB_STEP_SUMMARY
