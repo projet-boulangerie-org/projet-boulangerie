@@ -436,7 +436,7 @@ jobs:
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
 
-  # Job 4: Résumé des tests
+  # Job 4: Résumé des tests + Commentaire sur la PR
   test-summary:
     name: Test Summary
     runs-on: ubuntu-latest
@@ -484,3 +484,79 @@ jobs:
           else
             echo "⚠️ **Some checks failed - review the logs**" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const quickValidation = '${{ needs.quick-validation.result }}';
+            const securityCheck = '${{ needs.security-check.result }}';
+            const critical = '${{ needs.quick-validation.outputs.critical }}' || '0';
+            const high = '${{ needs.quick-validation.outputs.high }}' || '0';
+            const moderate = '${{ needs.quick-validation.outputs.moderate }}' || '0';
+            const low = '${{ needs.quick-validation.outputs.low }}' || '0';
+
+            const allPassed = quickValidation === 'success' && securityCheck === 'success';
+            const statusEmoji = allPassed ? '✅' : '❌';
+            const statusText = allPassed ? 'Tous les checks sont passés !' : 'Certains checks ont échoué';
+
+            let vulnWarning = '';
+            if (critical > 0 || high > 0 || moderate >= 5 || low >= 10) {
+              vulnWarning = '\n\n⚠️ **Action requise:** Vulnérabilités détectées au-dessus des seuils acceptables.';
+            } else if (moderate > 0 || low > 0) {
+              vulnWarning = '\n\nℹ️ Vulnérabilités dans les limites acceptables (pas de blocage).';
+            }
+
+            const comment = `## ${statusEmoji} CI Test - ${statusText}
+
+            ### 📊 Résultats des jobs
+
+            | Job | Statut |
+            |-----|--------|
+            | **Quick Build & Lint** | ${quickValidation === 'success' ? '✅ Succès' : '❌ Échec'} |
+            | **Security Scanning** | ${securityCheck === 'success' ? '✅ Succès' : '❌ Échec'} |
+
+            ### 🔒 Vulnérabilités npm audit
+
+            | Criticité | Nombre | Seuil |
+            |-----------|--------|-------|
+            | **Critical** | ${critical} | 0 |
+            | **High** | ${high} | 0 |
+            | **Moderate** | ${moderate} | < 5 |
+            | **Low** | ${low} | < 10 |
+            ${vulnWarning}
+
+            ---
+
+            <sub>🤖 Commentaire automatique généré par la CI • [Voir les détails complets](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})</sub>`;
+
+            // Trouver un éventuel commentaire précédent de la CI
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('CI Test -')
+            );
+
+            // Mettre à jour le commentaire existant ou en créer un nouveau
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
