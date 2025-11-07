@@ -1,0 +1,261 @@
+name: CI - Test Branches
+
+# Se déclenche sur les push vers test-push et les PR vers test-pr
+on:
+  push:
+    branches:
+      - test-push
+  pull_request:
+    branches:
+      - test-pr
+  workflow_dispatch:  # Permet aussi le déclenchement manuel
+
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+
+jobs:
+  # Job 1: Build & Lint basique (comme dev-to-release)
+  quick-validation:
+    name: Quick Build & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Check bundle size
+        run: |
+          echo "📦 Build output size:"
+          du -sh out/
+          echo ""
+          echo "Top 10 plus gros fichiers:"
+          find out -type f -exec ls -lh {} \; | sort -k5 -hr | head -10
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-build
+          path: out/
+          retention-days: 2
+
+  # Job 2: Security checks (version allégée de release-to-main)
+  security-check:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    needs: quick-validation
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # npm audit (non bloquant pour test)
+      - name: npm audit
+        run: |
+          echo "🔍 npm audit..."
+          npm audit --production || echo "⚠️ Vulnérabilités détectées (non bloquant)"
+
+      # Trivy scan
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'  # Non bloquant pour test
+        continue-on-error: true
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
+
+      # Secrets scanning
+      - name: Scan for secrets
+        run: |
+          echo "🔍 Recherche de secrets..."
+
+          FOUND=0
+
+          # API keys
+          if grep -r -E "api[_-]?key\s*[=:]\s*['\"][a-zA-Z0-9_-]{20,}['\"]" app/ components/ lib/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
+            echo "⚠️ Potentielle API key détectée"
+            FOUND=1
+          fi
+
+          # Passwords
+          if grep -r -E "(password|passwd|pwd)\s*[=:]\s*['\"].+['\"]" app/ components/ lib/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
+            echo "⚠️ Potentiel password détecté"
+            FOUND=1
+          fi
+
+          # Private keys
+          if grep -r "BEGIN.*PRIVATE KEY" . --include="*.ts" --include="*.tsx" --include="*.js" 2>/dev/null; then
+            echo "⚠️ Private key détectée"
+            FOUND=1
+          fi
+
+          # Tokens
+          if grep -r -E "token\s*[=:]\s*['\"][a-zA-Z0-9_-]{30,}['\"]" app/ components/ lib/ --include="*.ts" --include="*.tsx" 2>/dev/null; then
+            echo "⚠️ Potentiel token détecté"
+            FOUND=1
+          fi
+
+          if [ $FOUND -eq 1 ]; then
+            echo "⚠️ Secrets détectés (non bloquant pour test)"
+          else
+            echo "✅ Aucun secret détecté"
+          fi
+
+  # Job 3: Tests complets (comme release-to-main mais non bloquant)
+  full-validation:
+    name: Full Production-like Validation
+    runs-on: ubuntu-latest
+    needs: quick-validation
+    if: contains(github.event.head_commit.message, '[full-test]') || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify package-lock integrity
+        run: |
+          echo "🔍 Vérification package-lock.json..."
+          npm install --package-lock-only
+          if ! git diff --exit-code package-lock.json; then
+            echo "⚠️ package-lock.json modifié"
+          else
+            echo "✅ package-lock.json OK"
+          fi
+        continue-on-error: true
+
+      - name: Run ESLint (strict - 0 warnings)
+        run: npm run lint -- --max-warnings 0
+        continue-on-error: true
+
+      - name: ESLint Security Plugin
+        run: |
+          npm install --no-save eslint-plugin-security
+
+          cat > eslint.security.config.mjs << 'EOF'
+          import security from 'eslint-plugin-security';
+
+          export default [
+            {
+              ignores: ["node_modules/**", ".next/**", "out/**"]
+            },
+            {
+              files: ["**/*.{js,jsx,ts,tsx}"],
+              plugins: {
+                security
+              },
+              rules: {
+                'security/detect-object-injection': 'error',
+                'security/detect-non-literal-regexp': 'warn',
+                'security/detect-unsafe-regex': 'error',
+                'security/detect-buffer-noassert': 'error',
+                'security/detect-child-process': 'error',
+                'security/detect-eval-with-expression': 'error',
+                'security/detect-non-literal-fs-filename': 'warn',
+                'security/detect-possible-timing-attacks': 'warn',
+                'security/detect-pseudoRandomBytes': 'error'
+              }
+            }
+          ];
+          EOF
+
+          npx eslint . --config eslint.security.config.mjs --ext .js,.jsx,.ts,.tsx || echo "⚠️ ESLint security warnings"
+        continue-on-error: true
+
+      - name: Check for console statements
+        run: |
+          echo "🔍 Recherche de console.log..."
+          if grep -r "console\.\(log\|debug\|info\)" app/ components/ lib/ --include="*.tsx" --include="*.ts" 2>/dev/null; then
+            echo "⚠️ console.log détectés"
+          else
+            echo "✅ Pas de console.log"
+          fi
+
+      - name: Check for dangerous React patterns
+        run: |
+          echo "🔍 Recherche de patterns React dangereux..."
+          if grep -r "dangerouslySetInnerHTML" app/ components/ --include="*.tsx" 2>/dev/null; then
+            echo "⚠️ dangerouslySetInnerHTML détecté"
+            grep -rn "dangerouslySetInnerHTML" app/ components/ --include="*.tsx"
+          else
+            echo "✅ Pas de patterns dangereux"
+          fi
+
+      - name: Build production
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+  # Job 4: Résumé des tests
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [quick-validation, security-check]
+    if: always()
+
+    steps:
+      - name: Generate summary
+        run: |
+          echo "# 🧪 Test Branch CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Jobs Status:" >> $GITHUB_STEP_SUMMARY
+          echo "- Quick Validation: ${{ needs.quick-validation.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Security Check: ${{ needs.security-check.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 💡 Tips:" >> $GITHUB_STEP_SUMMARY
+          echo "- Ajoutez \`[full-test]\` dans votre message de commit pour lancer les tests complets" >> $GITHUB_STEP_SUMMARY
+          echo "- Les tests sont non-bloquants pour faciliter le développement" >> $GITHUB_STEP_SUMMARY
+          echo "- Avant de merger vers \`release\`, assurez-vous que tous les checks passent" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.quick-validation.result }}" = "success" ] && [ "${{ needs.security-check.result }}" = "success" ]; then
+            echo "✅ **All checks passed!**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Some checks failed - review the logs**" >> $GITHUB_STEP_SUMMARY
+          fi
