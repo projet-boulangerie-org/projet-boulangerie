@@ -20,6 +20,11 @@ jobs:
   quick-validation:
     name: Quick Build & Lint
     runs-on: ubuntu-latest
+    outputs:
+      critical: ${{ steps.npm-audit-test.outputs.critical }}
+      high: ${{ steps.npm-audit-test.outputs.high }}
+      moderate: ${{ steps.npm-audit-test.outputs.moderate }}
+      low: ${{ steps.npm-audit-test.outputs.low }}
 
     steps:
       - name: Checkout
@@ -92,11 +97,57 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # npm audit (non bloquant pour test)
-      - name: npm audit
+      # npm audit (non bloquant pour test - informatif)
+      - name: npm audit (TEST - Informatif)
+        id: npm-audit-test
         run: |
-          echo "🔍 npm audit..."
-          npm audit --production || echo "⚠️ Vulnérabilités détectées (non bloquant)"
+          echo "🔍 npm audit (test branch - non bloquant)..."
+          echo "📋 Information: Les seuils seront appliqués sur release/main"
+          echo ""
+          
+          # Capturer la sortie de npm audit
+          set +e
+          AUDIT_OUTPUT=$(npm audit --json 2>&1)
+          AUDIT_EXIT=$?
+          set -e
+          
+          # Parser les résultats JSON
+          CRITICAL=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.critical // 0' 2>/dev/null || echo "0")
+          HIGH=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.high // 0' 2>/dev/null || echo "0")
+          MODERATE=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.moderate // 0' 2>/dev/null || echo "0")
+          LOW=$(echo "$AUDIT_OUTPUT" | jq -r '.metadata.vulnerabilities.low // 0' 2>/dev/null || echo "0")
+          
+          # Export vers output pour le summary
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+          
+          echo "📊 Résultats du scan:"
+          echo "- Critical severity vulnerabilities: $CRITICAL"
+          echo "- High severity vulnerabilities: $HIGH"
+          echo "- Moderate severity vulnerabilities: $MODERATE"
+          echo "- Low severity vulnerabilities: $LOW"
+          echo ""
+          
+          TOTAL=$((CRITICAL + HIGH + MODERATE + LOW))
+          
+          if [ $TOTAL -gt 0 ]; then
+            echo "ℹ️  $TOTAL vulnérabilité(s) détectée(s) - Non bloquant pour test"
+            echo ""
+            echo "📌 Rappel des seuils pour les branches suivantes:"
+            echo "  - dev → release: 0 critical, 0 high, <5 moderate, <10 low"
+            echo "  - release → main: 0 vulnérabilités (toutes criticités)"
+            echo ""
+            
+            if [ $CRITICAL -gt 0 ] || [ $HIGH -gt 0 ]; then
+              echo "⚠️  Attention: Vulnérabilités critical/high présentes!"
+              echo "   → Seront BLOQUANTES sur dev→release"
+            fi
+          else
+            echo "✅ Aucune vulnérabilité détectée"
+          fi
+        continue-on-error: true
 
       # Trivy scan
       - name: Run Trivy vulnerability scanner
@@ -354,6 +405,16 @@ jobs:
           echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📊 Vulnérabilités npm audit:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Critical severity vulnerabilities:** ${{ needs.quick-validation.outputs.critical || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **High severity vulnerabilities:** ${{ needs.quick-validation.outputs.high || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Moderate severity vulnerabilities:** ${{ needs.quick-validation.outputs.moderate || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Low severity vulnerabilities:** ${{ needs.quick-validation.outputs.low || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ℹ️ _Non bloquant pour test-push_" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
           echo "## Jobs Status:" >> $GITHUB_STEP_SUMMARY
           echo "- Quick Validation: ${{ needs.quick-validation.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Security Check: ${{ needs.security-check.result }}" >> $GITHUB_STEP_SUMMARY
@@ -366,7 +427,10 @@ jobs:
           echo "## 💡 Tips:" >> $GITHUB_STEP_SUMMARY
           echo "- Ajoutez \`[full-test]\` dans votre message de commit pour lancer les tests complets" >> $GITHUB_STEP_SUMMARY
           echo "- Les tests sont non-bloquants pour faciliter le développement" >> $GITHUB_STEP_SUMMARY
-          echo "- Avant de merger vers \`release\`, assurez-vous que tous les checks passent" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📌 Seuils pour les prochaines branches:" >> $GITHUB_STEP_SUMMARY
+          echo "- **dev → release:** 0 critical, 0 high, <5 moderate, <10 low" >> $GITHUB_STEP_SUMMARY
+          echo "- **release → main:** 0 vulnérabilité (toutes criticités)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ needs.quick-validation.result }}" = "success" ] && [ "${{ needs.security-check.result }}" = "success" ]; then
